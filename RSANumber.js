@@ -7,42 +7,26 @@ function gcd(a, b) {
     return a;
 }
 
-// Calculating the value of d 
-function modInverse(e, phi) {
-    let m0 = phi;
-    let y = 0, x = 1;
-
-    if (phi === 1) return 0;
-
-    while (e > 1) {
-        // q is quotient
-        let q = Math.floor(e / phi);
-        let t = phi;
-
-        // phi is remainder now, process same as Euclid's algo
-        phi = e % phi;
-        e = t;
-        t = y;
-
-        // Update x and y
-        y = x - q * y;
-        x = t;
+ function modInverse (e, phi) {
+    let d ;
+    for(let i =1; i<5000; i++){
+        if((e*i) % phi == 1){
+            d= i;
+            break;
+        }
     }
+    return d;
+ }
 
-    // Make x positive
-    if (x < 0) x += m0;
-
-    return x;
-}
 
 // Function to generate RSA key pair
 function generateKeys() {
     //First we need to take large prime number for P & Q.  
-    const p = 13,q = 29; 
+    const p = 13,q = 11; 
     const n = p * q;
     const phi = (p - 1) * (q - 1);
 
-    let e = 13;
+    let e = 7;
     while (gcd(e, phi) !== 1) {
         e += 2;
     }
@@ -71,6 +55,7 @@ function decrypt(ciphertext, privateKey) {
 // Function to perform modular exponentiation
 function modExp(base, exp, mod) {
     let result = 1;
+    
     base = base % mod;
     while (exp > 0) {
         if (exp % 2 === 1) result = (result * base) % mod;
