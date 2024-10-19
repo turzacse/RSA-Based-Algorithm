@@ -1,28 +1,18 @@
 function gcd(a, b) {
-    while (b !== 0) {
-        let temp = b;
-        b = a % b;
-        a = temp;
-    }
-    return a;
+    return b === 0 ? a : gcd(b, a%b);
 }
 
  function modInverse (e, phi) {
-    let d ;
-    for(let i =1; i<5000; i++){
-        if((e*i) % phi == 1){
-            d= i;
-            break;
-        }
+    let d , i=1;
+    while(true) {
+        if((e*i) % phi == 1){ d= i; break; }
+        i++;
     }
     return d;
  }
 
-
-// Function to generate RSA key pair
 function generateKeys() {
-    //First we need to take large prime number for P & Q.  
-    const p = 13,q = 11; 
+    const p = 101,q = 103; // Take the very large prime. 
     const n = p * q;
     const phi = (p - 1) * (q - 1);
 
@@ -30,15 +20,14 @@ function generateKeys() {
     while (gcd(e, phi) !== 1) {
         e += 2;
     }
-
     const d = modInverse(e, phi);
 
     return {
         publicKey: { e, n },
         privateKey: { d, n },
-        allkey: {p,q,n,phi,e,d}
     };
 }
+
 
 // Function to encrypt a message
 function encrypt(message, publicKey) {
@@ -51,14 +40,14 @@ function decrypt(ciphertext, privateKey) {
     const { d, n } = privateKey;
     return modExp(ciphertext, d, n);
 }
-
-// Function to perform modular exponentiation
 function modExp(base, exp, mod) {
-    let result = 1;
-    
+    let result = 1 ;
     base = base % mod;
-    while (exp > 0) {
-        if (exp % 2 === 1) result = (result * base) % mod;
+
+    while(exp > 0) {
+        if(exp % 2 === 1) 
+            result = (result*base) % mod;
+
         exp = Math.floor(exp / 2);
         base = (base * base) % mod;
     }
@@ -66,14 +55,11 @@ function modExp(base, exp, mod) {
 }
 
 // Usage example
-const { publicKey, privateKey,allkey } = generateKeys();
-
-console.log('all key here', allkey);
-
-const message = 101; // Your message (as a number)
-console.log('The orginal Message::::::::::', message)
+const { publicKey, privateKey } = generateKeys();
+const message = 1378;
 const ciphertext = encrypt(message, publicKey);
-console.log('Encrypted:', ciphertext);
-
 const decryptedMessage = decrypt(ciphertext, privateKey);
-console.log('Decrypted:', decryptedMessage);
+
+console.log('The orginal Message ======>>', message);
+console.log('Encrypted Message ========>>', ciphertext);
+console.log('Decrypted Message ========>>', decryptedMessage);
