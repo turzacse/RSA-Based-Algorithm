@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "big-integer": "^1.6.52"
+    "big-integer": "^1.6.52",
+    "console.table": "^0.10.0"
   }
 }

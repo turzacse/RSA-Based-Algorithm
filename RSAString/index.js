@@ -22,6 +22,8 @@ class RSA {
     do {
       p = this.randomPrime(keysize / 2);
       q = this.randomPrime(keysize / 2);
+      console.log('p::', p);
+      console.log('q::', q);
       totient = bigInt.lcm(
         p.prev(),
         q.prev()

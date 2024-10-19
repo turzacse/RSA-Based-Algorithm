@@ -38,11 +38,11 @@ function modInverse(e, phi) {
 // Function to generate RSA key pair
 function generateKeys() {
     //First we need to take large prime number for P & Q.  
-    const p = 37,q = 73; 
+    const p = 13,q = 29; 
     const n = p * q;
     const phi = (p - 1) * (q - 1);
 
-    let e = 11;
+    let e = 13;
     while (gcd(e, phi) !== 1) {
         e += 2;
     }
@@ -51,7 +51,8 @@ function generateKeys() {
 
     return {
         publicKey: { e, n },
-        privateKey: { d, n }
+        privateKey: { d, n },
+        allkey: {p,q,n,phi,e,d}
     };
 }
 
@@ -80,9 +81,11 @@ function modExp(base, exp, mod) {
 }
 
 // Usage example
-const { publicKey, privateKey } = generateKeys();
+const { publicKey, privateKey,allkey } = generateKeys();
 
-const message = 1011; // Your message (as a number)
+console.log('all key here', allkey);
+
+const message = 101; // Your message (as a number)
 console.log('The orginal Message::::::::::', message)
 const ciphertext = encrypt(message, publicKey);
 console.log('Encrypted:', ciphertext);
